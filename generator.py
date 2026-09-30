@@ -11,15 +11,20 @@ def main():
 
     print(f"Generating from: {sys.argv[1]}")
 
+    # Create the "secret mask"
     secret_image = secret_reader.load(sys.argv[1])
     secret_mask = secret_reader.create_secret_mask(secret_image)
 
     # Crate the initial image
     noise_image = noise_generator.generate_noise(secret_image.shape[1], secret_image.shape[0])
 
-    # Extract the black pixels of the first image that satisfies the mask
-    pixel_secret_mask = cv2.bitwise_and(noise_image, noise_image, mask=secret_mask)
+    # Extract all elements from the noise image that are part of the secret mask
+    pixel_secret_mask = cv2.cvtColor(noise_image, cv2.COLOR_BGR2BGRA)
 
+    # Use the mask as alpha channel
+    pixel_secret_mask[:, :, 3] = secret_mask
+    
+    
     secret_image_1 = secret_image.copy()
     # Translate mask upwards
     offset_y = -5
@@ -30,23 +35,18 @@ def main():
     ])
     secret_image_1 = cv2.warpAffine(secret_mask, M, (secret_mask.shape[1], secret_mask.shape[0]))
     
-    # Translate mask upwards
-    pixel_secret_mask_translated = cv2.warpAffine(pixel_secret_mask, M, (pixel_secret_mask.shape[1], pixel_secret_mask.shape[0]))
-
-    noise_2 = noise_generator.generate_noise(secret_image.shape[1], secret_image.shape[0])
-    # Remove from noise2 the secret_image_1
-    noise_2 = noise_image.copy()
-
-    # Combine pixel_secret_mask_translated to noise_2 
-    noise_2 = cv2.bitwise_or(noise_2, pixel_secret_mask_translated)
+    noise_image_2 = noise_image.copy()
+    # Remove all pixels on noise_image_2 that are part of the translated secret mask
+    noise_image_removed = noise_image_2.copy()
+    noise_image_removed[secret_image_1 == 255] = [0, 0, 0]  # Set those pixels to black
     
 
 
-    cv2.imwrite("mask.jpg", secret_mask)
-    cv2.imwrite("noise1.jpg", noise_image)
-    cv2.imwrite("mask2.jpg", secret_image_1)
-    cv2.imwrite("secret_masked.jpg", pixel_secret_mask)
-    cv2.imwrite("noise2.jpg", noise_2)
+    cv2.imwrite("images/mask.png", secret_mask)
+    cv2.imwrite("images/noise1.png", noise_image)
+    cv2.imwrite("images/noise2.png", noise_image_removed)
+    cv2.imwrite("images/mask2.png", secret_image_1)
+    cv2.imwrite("images/secret_masked.png", pixel_secret_mask)
 if __name__ == "__main__":
     main()
 
