@@ -69,3 +69,6 @@ We have two images (but any number of images can be used):
 Now we can create a GIF with both images to reveal the secret:
 
 <img src="images/secret.gif" width="100">
+
+If we make 5 images and loop them, we have a smoother motion:  
+<img src="images/secret_smooth.gif" width="100">
