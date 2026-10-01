@@ -34,7 +34,12 @@ Image "secret.png" must be a Black & White image (mask). Secret is black, backgr
 <img src="images/mask2.png" width="100">  
 - Remove all pixels from the cloned **random noise image**  
 <img src="images/noise2.png" width="100">
-- Fill that empty space with a translated version of **secret mask image** to have the final image
+- Fill that empty space with a translated version of **secret mask image** to have the final image  
+<img src="images/combined.png" width="100">
 
 ## Final
-We have 2 images (can be N images), we can make a gif with both and reveal the secret:
+We have 2 images (can be wathever number of images):  
+<img src="images/noise1.png" width="100"> <img src="images/combined.png" width="100">
+
+Now we can make a gif with both and reveal the secret:  
+<img src="images/secret.gif" width="100">

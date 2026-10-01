@@ -26,6 +26,8 @@ def main():
     
     
     secret_image_1 = secret_image.copy()
+    pixel_secret_mask_2 = pixel_secret_mask.copy()
+
     # Translate mask upwards
     offset_y = -5
 
@@ -34,17 +36,23 @@ def main():
         [0, 1, offset_y]
     ])
     secret_image_1 = cv2.warpAffine(secret_mask, M, (secret_mask.shape[1], secret_mask.shape[0]))
-    
+    pixel_secret_mask_2 = cv2.warpAffine(pixel_secret_mask, M, (pixel_secret_mask.shape[1], pixel_secret_mask.shape[0]))
+
     noise_image_2 = noise_image.copy()
     # Remove all pixels on noise_image_2 that are part of the translated secret mask
     noise_image_removed = noise_image_2.copy()
     noise_image_removed[secret_image_1 == 255] = [0, 0, 0]  # Set those pixels to black
     
+    # Combine the noise image and the translated secret mask
+    combined_image = noise_image_removed.copy()
+    opaque_pixels = pixel_secret_mask_2[:, :, 3] > 0
+    combined_image[opaque_pixels] = pixel_secret_mask_2[opaque_pixels, :3]
 
 
     cv2.imwrite("images/mask.png", secret_mask)
     cv2.imwrite("images/noise1.png", noise_image)
     cv2.imwrite("images/noise2.png", noise_image_removed)
+    cv2.imwrite("images/combined.png", combined_image)
     cv2.imwrite("images/mask2.png", secret_image_1)
     cv2.imwrite("images/secret_masked.png", pixel_secret_mask)
 if __name__ == "__main__":
