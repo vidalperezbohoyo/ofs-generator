@@ -2,6 +2,15 @@
 
 Optical flow steganography generator.
 
+  <img src="images/test.jpg" width="100"> + <img src="images/noise1.png" width="100"> =   <img src="output/2.png" width="100">, <img src="output/3.png" width="100">, <img src="output/4.png" width="100">, <img src="output/5.png" width="100"> ...
+
+Decoded as:
+
+  <img src="images/secret_smooth.gif" width="100">
+
+
+
+
 # How to use it
 
 Install the Python dependencies:
