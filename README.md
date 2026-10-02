@@ -30,6 +30,15 @@ The `secret.png` image must be a black-and-white image (mask). The secret is bla
 
 It can be a normal RGB image in any format, but it must contain only two colors (no grays).
 
+```bash
+python solver.py combined.png <dimension>
+```
+
+The `secret.png` image must be a black-and-white image (mask). The secret is black, and the background is white.
+
+It can be a normal RGB image in any format, but it must contain only two colors (no grays).
+
+
 # How it works
 
 ## 1. Input secret

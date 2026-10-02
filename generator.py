@@ -33,7 +33,7 @@ def main():
     cv2.imwrite("output/1.png", noise_image)
 
     # Loop for every image to generate
-    for i in range(4):
+    for i in range(3):
 
         # Translation
         offset_y = -1
@@ -57,7 +57,15 @@ def main():
         # Save the combined image
         cv2.imwrite(f"output/{i + 2}.png", combined_image)
 
-   
+    # Generate a combination image of the 4 output images on 2x2 grid
+    combined_image = np.zeros((secret_image.shape[0] * 2, secret_image.shape[1] * 2, 3), dtype=np.uint8)
+    for i in range(2):
+        for j in range(2):
+            img = cv2.imread(f"output/{i * 2 + j + 1}.png")
+            combined_image[i * secret_image.shape[0]:(i + 1) * secret_image.shape[0], j * secret_image.shape[1]:(j + 1) * secret_image.shape[1]] = img
+
+    cv2.imwrite("output/combined.png", combined_image)
+
 if __name__ == "__main__":
     main()
 
